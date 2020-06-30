@@ -1,0 +1,7 @@
+bjoern
+rutter
+hydra_colorlog
+hydra-core
+-e git+git@github.com:Treegital/roughrider.routing.git#egg=roughrider.routing
+-e git+git@github.com:Treegital/horseman.git#egg=horseman
+-e .

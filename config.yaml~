@@ -1,0 +1,25 @@
+smtp:
+  host: example.com
+  port: 25
+  user: contact@example.com
+  password: test
+  emitter: test@example.com
+
+db:
+  user: adhoc
+  password: cabwid@Wrad6
+  database: adhoc
+
+storage:
+  root: /tmp
+
+server:
+  host: 0.0.0.0
+  port: 8080
+
+defaults:
+  - hydra/job_logging: colorlog
+  - hydra/hydra_logging: colorlog
+
+app:
+  auth_backend: http://api.novareto.de

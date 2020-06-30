@@ -1,0 +1,58 @@
+import wrapt
+import horseman.response
+from pathlib import Path
+from chameleon import PageTemplateLoader
+from .resources import a
+
+
+TEMPLATES = PageTemplateLoader(
+    str((Path(__file__).parent / 'templates').resolve()), ".pt")
+
+
+class Layout:
+
+    def __init__(self, name, **namespace):
+        self._template = TEMPLATES[name]
+        self._namespace = namespace
+
+    @property
+    def macros(self):
+        return self._template.macros
+
+    def render(self, content, **extra):
+        a.need()
+        ns = {**self._namespace, **extra}
+        return self._template.render(content=content, **ns)
+
+
+menu = (
+    ("view example", "/view"),
+)
+
+
+layout = Layout('layout.pt', menu=menu)
+
+
+def template_endpoint(template_name: str, layout=layout):
+    template = TEMPLATES[template_name]
+
+    @wrapt.decorator
+    def render(endpoint, instance, args, kwargs):
+        result = endpoint(*args, **kwargs)
+        if isinstance(result, horseman.response.Response):
+            return result
+        assert isinstance(result, dict)
+
+        request = kwargs.get('request')
+        path = request is not None and request.environ['PATH_INFO'] or ''
+        content = template.render(macros=layout.macros, **result)
+        if layout is not None:
+            body = layout.render(content, path=path)
+            return horseman.response.reply(
+                body=body,
+                headers={'Content-Type': 'text/html; charset=utf-8'})
+        return horseman.response.reply(
+            body=content,
+            headers={'Content-Type': 'text/html; charset=utf-8'})
+
+    return render

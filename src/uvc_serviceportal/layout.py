@@ -2,7 +2,6 @@ import wrapt
 import horseman.response
 from pathlib import Path
 from chameleon import PageTemplateLoader
-from .resources import a
 
 
 TEMPLATES = PageTemplateLoader(
@@ -20,7 +19,6 @@ class Layout:
         return self._template.macros
 
     def render(self, content, **extra):
-        a.need()
         ns = {**self._namespace, **extra}
         return self._template.render(content=content, **ns)
 

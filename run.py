@@ -5,8 +5,8 @@ import pathlib
 import rutter.urlmap
 import horseman.response
 
-from adhoc.request import Request
-from adhoc.web import Application
+from uvc_serviceportal.request import Request
+from uvc_serviceportal.web import Application
 
 
 logger = logging.getLogger(__name__)

@@ -9,6 +9,9 @@ install_requires = [
     'horseman',
     'roughrider.routing',
     'wrapt',
+    'fanstatic',
+    'cromlech.session',
+    'cromlech.sessions.file',
 ]
 
 test_requires = [
@@ -42,5 +45,8 @@ setup(
         'test': test_requires,
     },
     entry_points={
+        'fanstatic.libraries': [
+            'uvc_servicportal = uvc_serviceportal.resources:library',
+        ],
     }
 )

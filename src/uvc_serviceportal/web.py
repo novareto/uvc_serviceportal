@@ -4,6 +4,7 @@ import roughrider.routing.node
 from roughrider.routing.route import add_route as route
 from autoroutes import Routes
 from .layout import template_endpoint
+from .leikas import leika1, REG
 
 
 ROUTES = Routes()
@@ -30,4 +31,4 @@ class Application(horseman.meta.SentryNode,
 @route(ROUTES, '/')
 @template_endpoint('index.pt')
 def index(request):
-    return {'request': request}
+    return {'request': request, 'leikas': REG}

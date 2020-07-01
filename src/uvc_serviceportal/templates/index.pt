@@ -1,3 +1,8 @@
 <div>
-  <h1>I am an index</h1>
+  <h1>UVC-Service Portal</h1>
+  <div>
+      <div tal:repeat="leika leikas.values()">
+        <span tal:content="leika">
+      </div>
+  </div>
 </div>

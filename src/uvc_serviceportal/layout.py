@@ -2,6 +2,7 @@ import wrapt
 import horseman.response
 from pathlib import Path
 from chameleon import PageTemplateLoader
+from uvc_serviceportal.resources import css 
 
 
 TEMPLATES = PageTemplateLoader(
@@ -19,16 +20,12 @@ class Layout:
         return self._template.macros
 
     def render(self, content, **extra):
+        css.need()
         ns = {**self._namespace, **extra}
         return self._template.render(content=content, **ns)
 
 
-menu = (
-    ("view example", "/view"),
-)
-
-
-layout = Layout('layout.pt', menu=menu)
+layout = Layout('layout.pt')
 
 
 def template_endpoint(template_name: str, layout=layout):

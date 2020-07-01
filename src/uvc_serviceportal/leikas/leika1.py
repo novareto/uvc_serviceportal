@@ -15,6 +15,9 @@ class Leika1(BaseFormularObject):
     pass
 
 
+import pdb; pdb.set_trace()
+with open('leika1.json', 'r') as json:
+    SCHEMA = json.read()
 
 
 

@@ -7,7 +7,7 @@ from uvc_serviceportal.layout import template_endpoint
 from uvc_serviceportal import ROUTES
 from uvc_serviceportal.leikas import REG
 from uvc_serviceportal.components import BaseFormularObject
-from uvc_serviceportal.resources import app, vendor 
+from uvc_serviceportal.resources import csc
 from autoroutes import Routes
 from roughrider.routing.route import add_route as route
 
@@ -35,7 +35,5 @@ REG["leika1"] = Leika1(
 @route(ROUTES, '/leika1')
 @template_endpoint('form.pt')
 def index(request):
-    #vendor.need()
-    #app.need()
-    import pdb; pdb.set_trace()
+    #csc.need()
     return {'request': request, 'leika': REG['leika1']}

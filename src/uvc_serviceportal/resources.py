@@ -20,7 +20,7 @@ class VueResource(Resource):
             library_url = os.environ.get('FANSTATIC_HMR_URL')
         return super(VueResource, self).render(library_url)
 
-app = VueResource(library, 'app.js', bottom=True)
+#app = VueResource(library, 'app.js', bottom=True)
+app = Resource(library, 'csc/src/main.js', bottom=True)
 
 csc = Group([app, vendor])
-

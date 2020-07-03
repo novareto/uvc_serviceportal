@@ -1,9 +1,7 @@
 <div>
   <h1 tal:content="leika.title" />
-  <pre tal:content="leika.schema" />
-  <form id="form" action="">
+  <p class="lead" tal:content="leika.description"> </p>
+  <div id="form">
     <leika-form-wrapper tal:attributes=":schema leika.schema"> </leika-form-wrapper>
-    <input type="submit" class="btn btn-primary" value="Senden" />
-    <input type="submit" class="btn btn-default" value="Abbrechen" />
-  </form>
+  </div>
 </div>

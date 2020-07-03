@@ -27,8 +27,7 @@ setup(
     url='http://www.example.com',
     download_url='',
     description='Horseman example WebSite',
-    long_description=(open("README.txt").read() + "\n" +
-                      open(os.path.join("docs", "HISTORY.txt")).read()),
+    long_description=(open("README.txt").read()),
     license='ZPL',
     classifiers=[
         'Environment :: Web Environment',

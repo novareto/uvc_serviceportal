@@ -1,12 +1,9 @@
 import horseman.meta
-import horseman.response
 import roughrider.routing.node
 from roughrider.routing.route import add_route as route
 from .layout import template_endpoint
 from .leikas import leika1, REG
 from uvc_serviceportal import ROUTES
-
-
 
 
 class Application(horseman.meta.SentryNode,

@@ -1,11 +1,17 @@
 # Config file for automatic testing at travis-ci.com
 
+
 language: python
 python:
   - 3.8
   - 3.7
   - 3.6
   - 3.5
+
+before_install:
+        - sudo apt-get update -qq
+        - sudo apt-get install libev-dev
+
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis

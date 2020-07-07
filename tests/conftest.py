@@ -12,5 +12,11 @@ def app(caplog):
     from uvc_serviceportal import ROUTES
 
     return Application(
-        request_factory=Request, config=dict(), logger=caplog 
+        request_factory=Request, config=dict(), logger=caplog
     )
+
+
+@pytest.fixture
+def wsgiapp(app):
+    from webtest import TestApp
+    return TestApp(app)

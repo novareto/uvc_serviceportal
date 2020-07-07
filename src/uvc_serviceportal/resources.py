@@ -31,7 +31,7 @@ csc = Group([app, vendor])
 #
 
 
-bootstrap_css = Resource(library, 'uvc_serviceportal_bootrap.css', compiler="sass", source="scss/siguv.scss")
+bootstrap_css = Resource(library, 'uvc_serviceportal_bootstrap.css', compiler="sass", source="scss/siguv.scss")
 bootstrap_js = Resource(library, 'bootstrap.bundle.js', bottom=True)
 
 bootstrap = Group([bootstrap_css, bootstrap_js])

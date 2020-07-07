@@ -37,7 +37,6 @@ def setup_app(config, logger):
 
 @hydra.main(config_path="config.yaml")
 def run(config):
-
     application = setup_app(config, logger)
     session = setup_session(config)
 
@@ -46,8 +45,10 @@ def run(config):
     host, port = server.host, server.port
     logger.info(f"Server Started on http://{host}:{port}")
     bjoern.run(
-        fanstatic.Fanstatic(session(application)),
-        host, int(port), reuse_port=True,
+        fanstatic.Fanstatic(session(application), bottom=True, compile=True),
+        host,
+        int(port),
+        reuse_port=True,
     )
 
 

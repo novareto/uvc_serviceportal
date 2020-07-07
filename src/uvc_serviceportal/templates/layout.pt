@@ -4,43 +4,29 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--
-    <script type="text/javascript" src="/fanstatic/uvc_serviceportal/csc/dist/js/chunk-vendors.js"></script>
-    -->
-    <link href="http://localhost:8080/js/app.js" rel="preload" as="script" />
-    <link href="http://localhost:8080/js/chunk-vendors.js" rel="preload" as="script" />
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" crossorigin="anonymous"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-          integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" />
     <link rel="shortcut icon"
-          href="fanstatic/uvc_serviceportal/favicon.png"
-          />
-    <title>UV-Service Portal</title>
-  </head>
-  <body class="d-flex flex-column h-100">
-    <header>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container container-fluid">
-          <a class="navbar-brand" href="#">Startseite</a>
-        </div>
-      </nav>
-    </header>
-    <main class="flex-shrink-0">
-      <div class="container">
-        <div tal:replace="structure content"> </div>
+    href="fanstatic/uvc_serviceportal/favicon.png"
+    />
+  <title>UV-Service Portal</title>
+</head>
+<body class="d-flex flex-column h-100">
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container container-fluid">
+        <a class="navbar-brand" href="#">Startseite</a>
       </div>
-    </main>
-    <footer class="footer mt-auto py-3 bg-light">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
-    <script type="text/javascript" defer src="http://localhost:8080/js/chunk-vendors.js"></script>
-    <script type="text/javascript" defer src="http://localhost:8080/js/app.js"></script>
-  </body>
+    </nav>
+  </header>
+  <main class="flex-shrink-0">
+    <div class="container">
+      <div tal:replace="structure content"> </div>
+    </div>
+  </main>
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</body>
 </html>

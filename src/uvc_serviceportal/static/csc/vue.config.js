@@ -2,5 +2,5 @@
 module.exports = {
     filenameHashing: false,
     runtimeCompiler: true,
-    outputDir: '../dist'
+    outputDir: '../vuedist'
 }

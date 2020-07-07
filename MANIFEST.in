@@ -13,4 +13,5 @@ recursive-include src/uvc_serviceportal/static/vuedist *
 recursive-include src/uvc_serviceportal/templates *
 recursive-include src/uvc_serviceportal/leikas *.json
 include src/uvc_serviceportal/static/uvc_serviceportal.css
+include src/uvc_serviceportal/static/bootstrap.bundle.js
 include src/uvc_serviceportal/static/uvc_serviceportal_bootstrap.css

@@ -47,5 +47,8 @@ setup(
         'fanstatic.libraries': [
             'uvc_servicportal = uvc_serviceportal.resources:library',
         ],
+        'uvc_serviceportal.leikas': [
+            'leika1 = uvc_serviceportal.leikas.leika1:LEIKA',
+        ]
     }
 )

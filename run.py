@@ -9,6 +9,7 @@ import cromlech.session
 import cromlech.sessions.file
 
 from uvc_serviceportal.request import Request
+from uvc_serviceportal.leikas import REGISTRY
 from uvc_serviceportal.web import Application
 
 
@@ -39,6 +40,9 @@ def setup_app(config, logger):
 def run(config):
     application = setup_app(config, logger)
     session = setup_session(config)
+
+    # Loading Leikas
+    REGISTRY.load()
 
     # Serving the app
     server = config.server

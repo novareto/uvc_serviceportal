@@ -3,7 +3,8 @@
 # # cklinger@novareto.de
 
 
-class BaseFormularObject(object):
+class BaseFormularObject:
+
     def __init__(self, id, title, description, schema, output, icon):
         self.id = id
         self.title = title

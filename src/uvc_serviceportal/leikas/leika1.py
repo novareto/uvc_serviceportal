@@ -6,7 +6,7 @@ from pathlib import Path
 import horseman.parsing
 from uvc_serviceportal.layout import template_endpoint
 from uvc_serviceportal import ROUTES
-from uvc_serviceportal.leikas import REG
+from uvc_serviceportal.leikas import REGISTRY
 from uvc_serviceportal.components import BaseFormularObject
 from uvc_serviceportal.resources import csc
 from autoroutes import Routes
@@ -28,13 +28,12 @@ class Leika1(BaseFormularObject):
         return "%s/add" % self.id
 
 
-REG["leika1"] = Leika1(
+LEIKA = Leika1(
     id="leika1",
     title=u"Leika Test",
     description="Leika Test Description",
     output="<xml><uv></uv>",
     icon="bi bi-chevron-right",
-    
 )
 
 
@@ -42,7 +41,7 @@ REG["leika1"] = Leika1(
 @template_endpoint('form.pt')
 def index(request):
     #csc.need()
-    return {'request': request, 'leika': REG['leika1']}
+    return {'request': request, 'leika': REGISTRY['leika1']}
 
 
 @route(ROUTES, '/leika1/add', methods=['POST',])

@@ -2,9 +2,9 @@ bjoern
 rutter
 hydra_colorlog
 hydra-core
--e git+git@github.com:Cromlech/cromlech.session.git#egg=cromlech.session
+-e git+https://github.com/Cromlech/cromlech.session.git#egg=cromlech.session
 git+https://github.com/Cromlech/cromlech.sessions.file.git#egg=cromlech.sessions.file
 git+https://github.com/Cromlech/cromlech.marshallers.git#egg=cromlech.marshallers
--e git+git@github.com:Treegital/roughrider.routing.git#egg=roughrider.routing
--e git+git@github.com:Treegital/horseman.git#egg=horseman
+-e git+https://github.com/Treegital/roughrider.routing.git#egg=roughrider.routing
+-e git+https://github.com/Treegital/horseman.git#egg=horseman
 -e .

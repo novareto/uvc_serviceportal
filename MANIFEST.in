@@ -9,7 +9,7 @@ recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
 recursive-include docs *.rst conf.py Makefile *.jpg *.png *.gif *.pt *.json 
-recursive-include src/uvc_serviceportal/static/dist/js *
+recursive-include src/uvc_serviceportal/static/vuedist *
 recursive-include src/uvc_serviceportal/templates *
 recursive-include src/uvc_serviceportal/leikas *.json
 include src/uvc_serviceportal/static/uvc_serviceportal.css

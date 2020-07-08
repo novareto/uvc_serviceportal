@@ -5,6 +5,7 @@
 from pathlib import Path
 import horseman.parsing
 import horseman.response
+import horseman.meta
 from uvc_serviceportal.layout import template_endpoint
 from uvc_serviceportal import ROUTES
 from uvc_serviceportal.leikas.components import REGISTRY
@@ -39,16 +40,20 @@ LEIKA = Leika1(
 
 
 @route(ROUTES, '/leikas/{leika_id:string}')
-@template_endpoint('form.pt')
-def index(request):
-    #csc.need()
-    if leika := REGISTRY.get(request.params['leika_id']):
-        return {'request': request, 'leika': leika}
-    return horseman.response.reply(404)
+class Index(horseman.meta.APIView):
+
+    @template_endpoint('form.pt')
+    def GET(self, request):
+        #csc.need()
+        if leika := REGISTRY.get(request.params['leika_id']):
+            return {'request': request, 'leika': leika}
+        return horseman.response.reply(404)
 
 
-@route(ROUTES, '/leikas/{leika_id:string}/add', methods=['POST',])
-def worker(request):
-    form, files = horseman.parsing.parse(
-        request.environ['wsgi.input'], request.content_type)
-    import pdb; pdb.set_trace()
+@route(ROUTES, '/leikas/{leika_id:string}/add')
+class Add(horseman.meta.APIView):
+
+    def POST(self, request):
+        form, files = horseman.parsing.parse(
+            request.environ['wsgi.input'], request.content_type)
+        import pdb; pdb.set_trace()

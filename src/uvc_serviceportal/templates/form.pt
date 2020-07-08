@@ -2,6 +2,7 @@
   <h1 tal:content="leika.title" />
   <p class="lead" tal:content="leika.description"> </p>
   <div>
-    <leika-form-wrapper tal:attributes=":schema leika.schema"> </leika-form-wrapper>
+    <leika-form-wrapper
+        tal:attributes=":schema leika.jsonschema"></leika-form-wrapper>
   </div>
 </div>

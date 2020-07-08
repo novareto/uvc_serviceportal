@@ -4,21 +4,17 @@
 
 import json
 from pkg_resources import iter_entry_points
+from pydantic import BaseModel
 
 
+class BaseFormularObject(BaseModel):
 
-class BaseFormularObject:
-
-    def __init__(self, id, title, description, schema, output, icon):
-        self.id = id
-        self.title = title
-        self.description = description
-        self.schema = schema
-        self.output = output
-        self.icon = icon
-
-    def as_dict(self):
-        return dict(id=self.id, title=self.title, description=self.description, icon=self.icon)
+    id: str
+    title: str
+    description: str
+    jsonschema: str
+    output: str
+    icon: str
 
     def __html__(self):
         CARD_HTML = f"""
@@ -56,8 +52,7 @@ class Registry(dict):
             self.register(loader.name, loader.load())
 
     def json(self):
-        return json.dumps([x.as_dict() for x in self.values()])
-
+        return json.dumps([x.json() for x in self.values()])
 
 
 REGISTRY = Registry()

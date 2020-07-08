@@ -27,4 +27,8 @@ class Application(horseman.meta.SentryNode,
 @route(ROUTES, '/')
 @template_endpoint('index.pt')
 def index(request):
-    return {'request': request, 'leikas': REGISTRY, 'leikas_json': REGISTRY.json()}
+    return {
+        'request': request,
+        'leikas': REGISTRY,
+        'leikas_json': REGISTRY.json()
+    }

@@ -27,8 +27,25 @@ class Layout:
         return self._template.render(content=content, **ns)
 
 
-layout = Layout('layout.pt')
+def xml_endpoint(template_name: str):
+    template = TEMPLATES[template_name]
 
+    @wrapt.decorator
+    def render(endpoint, instance, args, kwargs):
+        result = endpoint(*args, **kwargs)
+        if isinstance(result, horseman.response.Response):
+            return result
+        assert isinstance(result, dict)
+
+        content = template.render(**result)
+        return horseman.response.reply(
+            body=content,
+            headers={'Content-Type': 'application/xml'})
+
+    return render
+
+
+layout = Layout('layout.pt')
 
 def template_endpoint(template_name: str, layout=layout):
     template = TEMPLATES[template_name]

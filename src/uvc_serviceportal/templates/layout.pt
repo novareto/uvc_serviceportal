@@ -22,13 +22,35 @@
       <div tal:replace="structure content"> </div>
     </div>
   </main>
-  <footer class="portal-footer">
+
+
+<footer id="portal-footer" class="footer mt-auto py-3">
+  <div class="page-footer">
+    <div class="container">
+      <p>Place sticky footer content here.</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+
+  <footer class="portal-footer" id="portal-footer">
     <div class="page-footer">
-      <div class="row">
-        <span class="text-muted">Place sticky footer content here.</span>
+      <div class="containe">
+        <p>Place sticky footer content here.</p>
       </div>
     </div>
   </footer>
+
+  <footer class="footer mt-auth py-3">
+     <div class="pe-footer">
+      <div class="row">
+        <span class="text-muted">Place sticky footer content here.</span>
+       </div>
+     </div>
+   </footer>
+   -->
+
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 </body>
 </html>

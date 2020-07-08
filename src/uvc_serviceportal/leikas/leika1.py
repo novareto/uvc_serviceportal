@@ -57,4 +57,7 @@ class Add(horseman.meta.APIView):
         form, files = horseman.parsing.parse(
             request.environ['wsgi.input'], request.content_type)
         if leika := REGISTRY.get(request.params['leika_id']):
-            print(leika.output.format(**form.to_dict()))
+            from repoze.filesafe import create_file
+            f = create_file('/tmp/leik1.xml')
+            f.write(leika.output.format(**form.to_dict()))
+            import pdb; pdb.set_trace()

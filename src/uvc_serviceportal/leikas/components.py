@@ -2,6 +2,10 @@
 # # Copyright (c) 2007-2019 NovaReto GmbH
 # # cklinger@novareto.de
 
+import json
+from pkg_resources import iter_entry_points
+
+
 
 class BaseFormularObject:
 
@@ -12,6 +16,9 @@ class BaseFormularObject:
         self.schema = schema
         self.output = output
         self.icon = icon
+
+    def as_dict(self):
+        return dict(id=self.id, title=self.title, description=self.description, icon=self.icon)
 
     def __html__(self):
         CARD_HTML = f"""
@@ -31,3 +38,26 @@ class BaseFormularObject:
         </div>
         """
         return CARD_HTML
+
+
+class Registry(dict):
+    __slots__ = ()
+
+    def register(self, name: str, form: BaseFormularObject):
+        if name in self:
+            raise KeyError(f'{name} already exists.')
+        if not isinstance(form, BaseFormularObject):
+            raise ValueError(f'{name} is not a valid formular class.')
+        self[name] = form
+
+    def load(self):
+        self.clear()
+        for loader in iter_entry_points('uvc_serviceportal.leikas'):
+            self.register(loader.name, loader.load())
+
+    def json(self):
+        return json.dumps([x.as_dict() for x in self.values()])
+
+
+
+REGISTRY = Registry()

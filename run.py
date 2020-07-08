@@ -9,7 +9,7 @@ import cromlech.session
 import cromlech.sessions.file
 
 from uvc_serviceportal.request import Request
-from uvc_serviceportal.leikas import REGISTRY
+from uvc_serviceportal.leikas.components import REGISTRY
 from uvc_serviceportal.web import Application
 
 

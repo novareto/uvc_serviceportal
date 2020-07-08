@@ -6,8 +6,8 @@ from pathlib import Path
 import horseman.parsing
 from uvc_serviceportal.layout import template_endpoint
 from uvc_serviceportal import ROUTES
-from uvc_serviceportal.leikas import REGISTRY
-from uvc_serviceportal.components import BaseFormularObject
+from uvc_serviceportal.leikas.components import REGISTRY
+from uvc_serviceportal.leikas.components import BaseFormularObject
 from uvc_serviceportal.resources import csc
 from autoroutes import Routes
 from roughrider.routing.route import add_route as route

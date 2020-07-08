@@ -1,8 +1,12 @@
 <div>
   <h1>UVC-Service Portal</h1>
+  <!--
   <div>
-      <div tal:repeat="leika leikas.values()">
-        <span tal:content="leika">
-      </div>
+    <div tal:repeat="leika leikas.values()">
+      <span tal:content="leika"> </span>
+    </div>
   </div>
+  <h1> LP </h1>
+  -->
+  <landing-page tal:attributes=":leikas leikas_json"> </landing-page>
 </div>

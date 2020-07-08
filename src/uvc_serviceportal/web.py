@@ -2,7 +2,7 @@ import horseman.meta
 import roughrider.routing.node
 from roughrider.routing.route import add_route as route
 from .layout import template_endpoint
-from .leikas import REGISTRY
+from .leikas.components import REGISTRY
 from uvc_serviceportal import ROUTES
 
 
@@ -27,4 +27,4 @@ class Application(horseman.meta.SentryNode,
 @route(ROUTES, '/')
 @template_endpoint('index.pt')
 def index(request):
-    return {'request': request, 'leikas': REGISTRY}
+    return {'request': request, 'leikas': REGISTRY, 'leikas_json': REGISTRY.json()}

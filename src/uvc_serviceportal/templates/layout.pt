@@ -18,13 +18,15 @@
     </nav>
   </header>
   <main class="flex-shrink-0">
-    <div class="container">
+    <div id="app" class="container">
       <div tal:replace="structure content"> </div>
     </div>
   </main>
-  <footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-      <span class="text-muted">Place sticky footer content here.</span>
+  <footer class="portal-footer">
+    <div class="page-footer">
+      <div class="row">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
     </div>
   </footer>
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>

@@ -6,12 +6,14 @@ version = "0.2.1"
 
 install_requires = [
     'chameleon',
-    'horseman',
-    'roughrider.routing',
-    'wrapt',
-    'fanstatic',
     'cromlech.session',
     'cromlech.sessions.file',
+    'fanstatic',
+    'horseman',
+    'pydantic',
+    'roughrider.routing',
+    'transaction',
+    'wrapt',
 ]
 
 test_requires = [

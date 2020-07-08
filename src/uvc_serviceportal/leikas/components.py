@@ -52,7 +52,7 @@ class Registry(dict):
             self.register(loader.name, loader.load())
 
     def json(self):
-        return json.dumps([x.json() for x in self.values()])
+        return json.dumps([json.loads(x.json()) for x in self.values()])
 
 
 REGISTRY = Registry()

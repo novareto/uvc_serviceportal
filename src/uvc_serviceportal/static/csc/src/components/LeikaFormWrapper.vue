@@ -30,7 +30,7 @@ export default {
             for ( var key in this.model ) {
                 formData.append(key, this.model[key]);
             }
-            axios.post('/leika1/add', formData).then((response) => {
+            axios.post('/leikas/leika1/add', formData).then((response) => {
                      console.log(response)
                         // success callback
                     }, (response) => {

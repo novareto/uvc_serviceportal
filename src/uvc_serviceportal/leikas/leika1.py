@@ -34,7 +34,7 @@ LEIKA = Leika1(
     id="leika1",
     title=u"Leika Test",
     description="Leika Test Description",
-    output="<xml><uv></uv>",
+    output="<xml><uv><name>{name}</name></uv>",
     icon="bi bi-chevron-right",
 )
 
@@ -56,4 +56,5 @@ class Add(horseman.meta.APIView):
     def POST(self, request):
         form, files = horseman.parsing.parse(
             request.environ['wsgi.input'], request.content_type)
-        import pdb; pdb.set_trace()
+        if leika := REGISTRY.get(request.params['leika_id']):
+            print(leika.output.format(**form.to_dict()))

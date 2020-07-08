@@ -6,7 +6,7 @@ from pathlib import Path
 import horseman.parsing
 import horseman.response
 import horseman.meta
-from uvc_serviceportal.layout import template_endpoint
+from uvc_serviceportal.layout import template_endpoint, xml_endpoint
 from uvc_serviceportal import ROUTES
 from uvc_serviceportal.leikas.components import REGISTRY
 from uvc_serviceportal.leikas.components import BaseFormularObject
@@ -52,6 +52,12 @@ class Index(horseman.meta.APIView):
 
 @route(ROUTES, '/leikas/{leika_id:string}/add')
 class Add(horseman.meta.APIView):
+
+    @xml_endpoint('leika1.xml')
+    def GET(self, request):
+        if leika := REGISTRY.get(request.params['leika_id']):
+            return {'name': 'My name'}
+        return horseman.response.reply(404)
 
     def POST(self, request):
         form, files = horseman.parsing.parse(

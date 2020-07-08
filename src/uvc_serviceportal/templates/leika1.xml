@@ -1,0 +1,5 @@
+<xml>
+  <uv>
+    <name tal:content="name"></name>
+  </uv>
+</xml>

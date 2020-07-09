@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mount a view component 1`] = `
+<div>
+  <form action="">
+    <div class="json-schema-form pure-form pure-form-stacked">
+      <div class="pure-control-group"><label>firstName</label> <input type="text">
+        <!---->
+      </div>
+    </div> <input type="submit" class="btn btn-primary">
+  </form>
+</div>
+`;

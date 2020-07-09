@@ -6,49 +6,36 @@ from horseman.prototyping import Environ, StartResponse
 from roughrider.routing.route import add_route as route
 from uvc_serviceportal import ROUTES
 
+from .mq import MQTransaction
 from .layout import template_endpoint
 from .leikas.components import REGISTRY
-
-
-class TestDataManager:
-
-    def tpc_vote(self, txn):
-        pass
-
-    def tpc_begin(self, txn):
-        print('Transaction commit begins.')
-
-    def commit(self, txn):
-        print('Transaction commiting !')
-
-    def tpc_finish(self, txn):
-        print('Transaction commit closing.')
-
-    def abort(self, txn):
-        print('Transaction aborted !')
 
 
 class Application(horseman.meta.SentryNode,
                   roughrider.routing.node.RoutingNode):
 
     __slots__ = (
-        'config', 'logger', 'request_factory'
+        'mqcenter', 'config', 'logger', 'request_factory'
     )
 
-    def __init__(self, logger, request_factory, config):
+    def __init__(self, mqcenter, logger, request_factory, config):
         self.request_factory = request_factory
         self.config = config
         self.logger = logger
         self.routes = ROUTES
+        self.mqcenter = mqcenter
 
     def handle_exception(self, exc_info, environ):
         exc_type, exc, traceback = exc_info
         self.logger.debug(exc)
 
     def __call__(self, environ: Environ, start_response: StartResponse):
-        with transaction.manager as tr:
-            #tr.join(TestDataManager())
+        with MQTransaction(
+                url=self.config['mq_url'],
+                queues=self.mqcenter.queues) as dm:
+            environ['mq.dm'] = dm
             yield from super().__call__(environ, start_response)
+            environ['mq.dm'] = None
 
 
 @route(ROUTES, '/')

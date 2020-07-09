@@ -47,7 +47,7 @@ class Application(horseman.meta.SentryNode,
 
     def __call__(self, environ: Environ, start_response: StartResponse):
         with transaction.manager as tr:
-            tr.join(TestDataManager())
+            #tr.join(TestDataManager())
             yield from super().__call__(environ, start_response)
 
 

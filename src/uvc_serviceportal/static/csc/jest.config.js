@@ -11,5 +11,6 @@ module.exports = {
   },
   snapshotSerializers: [
     "<rootDir>/node_modules/jest-serializer-vue"
-  ]
+  ],
+    transformIgnorePatterns: ['/node_modules/(?!@roma219/vue-jsonschema-form)']
 }

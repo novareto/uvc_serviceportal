@@ -66,4 +66,4 @@ class Add(horseman.meta.APIView):
             from repoze.filesafe import create_file
             f = create_file('/tmp/leik1.xml')
             f.write(leika.output.format(**form.to_dict()))
-            import pdb; pdb.set_trace()
+            1/0

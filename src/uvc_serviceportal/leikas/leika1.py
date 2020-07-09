@@ -34,10 +34,20 @@ LEIKA = Leika1(
     id="leika1",
     title=u"Leika Test",
     description="Leika Test Description",
+    tags=['Unfall', 'Sicherheitsfachkraft'],
     output="<xml><uv><name>{name}</name></uv>",
     icon="bi bi-chevron-right",
 )
 
+
+LEIKA1 = Leika1(
+    id="leika2",
+    title=u"Leika2 Test",
+    description="Leika Test Description",
+    tags=['Unfall', 'Sicherheitsfachkraft'],
+    output="<xml><uv><name>{name}</name></uv>",
+    icon="bi bi-chevron-right",
+)
 
 @route(ROUTES, '/leikas/{leika_id:string}')
 class Index(horseman.meta.APIView):

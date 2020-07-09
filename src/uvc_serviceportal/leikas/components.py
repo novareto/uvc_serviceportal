@@ -3,6 +3,7 @@
 # # cklinger@novareto.de
 
 import json
+from typing import List
 from pkg_resources import iter_entry_points
 from pydantic import BaseModel
 
@@ -12,6 +13,7 @@ class BaseFormularObject(BaseModel):
     id: str
     title: str
     description: str
+    tags: List[str] = []
     jsonschema: str
     output: str
     icon: str

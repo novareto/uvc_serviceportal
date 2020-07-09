@@ -4,3 +4,7 @@ module.exports = {
     runtimeCompiler: true,
     outputDir: '../vuedist'
 }
+
+chainWebpack: config => {
+  config.optimization.delete('splitChunks')
+}

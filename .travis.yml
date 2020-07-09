@@ -11,3 +11,13 @@ matrix:
             - sudo apt-get install libev-dev
       install: pip install -U tox-travis
       script: tox
+
+    - language: node_js
+      node_js:
+        - '8'
+      before_install:
+        - cd src/uvc_serviceportal/static/csc
+      install:
+        - yarn
+      script:
+        - yarn test

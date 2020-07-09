@@ -30,5 +30,5 @@ def test_registry():
     class Test(BaseFormularObject):
         pass
 
-    test = Test('test', 'test', 'test', '{}', '', '')
+    test = Test(id='test', title='test', description='test', jsonschema='{}', output='', icon='')
     REGISTRY.register('test', test)

@@ -1,4 +1,5 @@
 import hydra
+import kombu
 import logging
 import bjoern
 import pathlib
@@ -8,6 +9,7 @@ import horseman.response
 import cromlech.session
 import cromlech.sessions.file
 
+from uvc_serviceportal.mq import MQCenter
 from uvc_serviceportal.request import Request
 from uvc_serviceportal.leikas.components import REGISTRY
 from uvc_serviceportal.web import Application
@@ -26,7 +28,10 @@ def setup_session(config):
 
 
 def setup_app(config, logger):
-    frontend = Application(logger, Request, config)
+    mqcenter = MQCenter({
+        'test': kombu.Exchange('test', type='direct')
+    })
+    frontend = Application(mqcenter, logger, Request, config)
 
     # Creating the main router
     application = rutter.urlmap.URLMap(

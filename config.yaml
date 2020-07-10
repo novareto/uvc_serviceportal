@@ -8,3 +8,4 @@ defaults:
 
 app:
   auth_backend: http://api.novareto.de
+  mq_url: memory://localhost:8888/

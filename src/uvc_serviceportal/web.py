@@ -1,12 +1,13 @@
 import transaction
 import horseman.meta
+import horseman.response
 import roughrider.routing.node
 
 from horseman.prototyping import Environ, StartResponse
 from roughrider.routing.route import add_route as route
 from uvc_serviceportal import ROUTES
 
-from .mq import MQTransaction
+from .mq import MQTransaction, Message
 from .layout import template_endpoint
 from .leikas.components import REGISTRY
 
@@ -30,12 +31,9 @@ class Application(horseman.meta.SentryNode,
         self.logger.debug(exc)
 
     def __call__(self, environ: Environ, start_response: StartResponse):
-        with MQTransaction(
-                url=self.config['mq_url'],
-                queues=self.mqcenter.queues) as dm:
-            environ['mq.dm'] = dm
+        with transaction.manager as txn:
+            environ['txn'] = txn
             yield from super().__call__(environ, start_response)
-            environ['mq.dm'] = None
 
 
 @route(ROUTES, '/')

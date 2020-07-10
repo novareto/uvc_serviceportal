@@ -32,3 +32,20 @@ def test_registry():
 
     test = Test(id='test', title='test', description='test', jsonschema='{}', output='', icon='')
     REGISTRY.register('test', test)
+
+
+def test_mq_send(app, reader):
+    import kombu
+    import transaction
+    from uvc_serviceportal.mq import Message
+
+    app.mqcenter.exchanges['test'] = kombu.Exchange('test', type='direct')
+    app.mqcenter.register_queue('test', 'info', 'default')
+    request = app.request_factory(app, environ={'REQUEST_METHOD': 'GET'})
+
+    message = Message(type='info', data="BLA")
+    with transaction.manager:
+        with request.mq_transaction as dm:
+            dm.createMessage(message)
+
+    messages = reader(app)

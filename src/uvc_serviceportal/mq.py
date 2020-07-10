@@ -3,22 +3,6 @@ import kombu
 from pkg_resources import iter_entry_points
 
 
-class MQCenter:
-
-    __slots__ = ('emitters', 'exchanges', 'processors', 'receivers')
-
-    def __init__(self, exchanges):
-        self.exchanges = exchanges
-        self.queues = {}
-
-    def register_queue(self, exchange_name, name, routing_key="default"):
-        if (exchange := in self.exchanges.get(exchange_name)) is not None:
-            queue = kombu.Queue(name, exchange, routing_key)
-            self.queues[name] = queue
-            return queue
-        raise KeyError(f'Echange {exchange_name} does not exist')
-
-
 class Message:
 
     __slots__ = ('type', 'data')
@@ -62,7 +46,7 @@ class MQDataManager:
             while self.messages:
                 uid, message = self.messages.popitem()
                 payload = message.dump()
-                queue = self.queues.get(message.type)
+                queue = self.queues[message.type]
                 message.publish(payload, conn, queue, message.type)
 
     def abort(self, transaction):
@@ -86,17 +70,36 @@ class MQDataManager:
 
 class MQTransaction:
 
-    def __init__(self, url: str, queues: dict, transaction_manager=None):
+    def __init__(self, url: str, queues: dict, txn=None):
         self.url = url
         self.queues = queues
-        if transaction_manager is None:
-            transaction_manager = transaction.manager
-        self.transaction_manager = transaction_manager
+        if txn is None:
+            txn = transaction.get()
+        self.txn = txn
 
     def __enter__(self):
         dm = MQDataManager(self.url, self.queues)
-        self.transaction_manager.join(dm)
+        self.txn.join(dm)
         return dm
 
     def __exit__(self, type, value, traceback):
         pass
+
+
+class MQCenter:
+
+    __slots__ = ('queues', 'exchanges')
+
+    def __init__(self, exchanges):
+        self.exchanges = exchanges
+        self.queues = {}
+
+    def register_queue(self, exchange_name, name, routing_key="default"):
+        if (exchange := self.exchanges.get(exchange_name)) is not None:
+            queue = kombu.Queue(name, exchange, routing_key)
+            self.queues[name] = queue
+            return queue
+        raise KeyError(f'Echange {exchange_name} does not exist')
+
+    def get_transaction(self, url, transaction_manager=None):
+        return MQTransaction(url, self.queues, transaction_manager)

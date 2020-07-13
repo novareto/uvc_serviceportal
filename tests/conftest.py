@@ -34,9 +34,7 @@ def reader():
             self.messages = []
 
         def callback(self, body, message):
-            import pdb
-            pdb.set_trace()
-            self.messages.append(body, message)
+            self.messages.append((body, message))
             message.ack()
 
         def __call__(self, app):

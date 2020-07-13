@@ -13,6 +13,7 @@ from uvc_serviceportal.leikas.components import BaseFormularObject
 from uvc_serviceportal.resources import csc
 from autoroutes import Routes
 from roughrider.routing.route import add_route as route
+from uvc_serviceportal.mq import Message
 
 
 PATH = Path(__file__)
@@ -73,7 +74,10 @@ class Add(horseman.meta.APIView):
         form, files = horseman.parsing.parse(
             request.environ['wsgi.input'], request.content_type)
         if leika := REGISTRY.get(request.params['leika_id']):
-            from repoze.filesafe import create_file
-            f = create_file('/tmp/leik1.xml')
-            f.write(leika.output.format(**form.to_dict()))
-            1/0
+            with request.mq_transaction as mq:
+
+                mq.createMessage(Message(queue='info', routing_key='default', data='test'))
+            #from repoze.filesafe import create_file
+            #f = create_file('/tmp/leik1.xml')
+            #f.write(leika.output.format(**form.to_dict()))
+            #1/0

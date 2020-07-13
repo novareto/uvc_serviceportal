@@ -14,7 +14,8 @@ install_requires = [
     'roughrider.routing',
     'transaction',
     'wrapt',
-    'repoze.filesafe'
+    'repoze.filesafe',
+    'kombu'
 ]
 
 test_requires = [

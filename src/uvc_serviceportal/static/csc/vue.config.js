@@ -2,9 +2,9 @@
 module.exports = {
     filenameHashing: false,
     runtimeCompiler: true,
-    outputDir: '../vuedist'
-}
+    outputDir: '../vuedist',
 
-chainWebpack: config => {
-  config.optimization.delete('splitChunks')
+    chainWebpack: config => {
+        config.optimization.delete('splitChunks')
+    }
 }

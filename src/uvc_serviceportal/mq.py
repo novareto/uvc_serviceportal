@@ -5,11 +5,12 @@ from pkg_resources import iter_entry_points
 
 class Message:
 
-    __slots__ = ('type', 'data')
+    __slots__ = ('routing_key', 'data', 'queue')
 
-    def __init__(self, type: str, **data):
+    def __init__(self, queue: str, routing_key: str, **data):
         self.data = data
-        self.type = type
+        self.queue = queue
+        self.routing_key = routing_key
 
     @property
     def id(self):
@@ -46,8 +47,8 @@ class MQDataManager:
             while self.messages:
                 uid, message = self.messages.popitem()
                 payload = message.dump()
-                queue = self.queues[message.type]
-                message.publish(payload, conn, queue, message.type)
+                queue = self.queues[message.queue]
+                message.publish(payload, conn, queue, message.routing_key)
 
     def abort(self, transaction):
         self.messages = {}

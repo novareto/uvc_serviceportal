@@ -20,3 +20,7 @@ class Request(Overhead):
 
     def set_data(self, data):
         self.data = data
+
+    @property
+    def mq_transaction(self):
+        return self.app.mqcenter.get_transaction(self.app.config['mq_url'])

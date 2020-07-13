@@ -31,7 +31,8 @@ def setup_app(config, logger):
     mqcenter = MQCenter({
         'test': kombu.Exchange('test', type='direct')
     })
-    frontend = Application(mqcenter, logger, Request, config)
+    mqcenter.register_queue('test', 'info', 'default')
+    frontend = Application(mqcenter, logger, Request, config.app)
 
     # Creating the main router
     application = rutter.urlmap.URLMap(

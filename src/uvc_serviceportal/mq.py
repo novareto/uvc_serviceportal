@@ -2,6 +2,7 @@ import enum
 import transaction
 import kombu
 import typing
+from dataclasses import dataclass
 from pkg_resources import iter_entry_points
 
 
@@ -12,18 +13,11 @@ class ExchangeType(enum.Enum):
     headers = "headers"
 
 
+@dataclass
 class Message:
-
-    __slots__ = ('routing_key', 'data', 'queue')
-
-    def __init__(self, queue: str, routing_key: str, data: typing.Any):
-        self.data = data
-        self.queue = queue
-        self.routing_key = routing_key
-
-    @property
-    def id(self):
-        return self.__hash__()
+    data: typing.Any
+    queue: str
+    routing_key: str
 
 
 class MQDataManager:
@@ -33,17 +27,19 @@ class MQDataManager:
     def __init__(self, url: str, queues: dict):
         self.url = url
         self.queues = queues
-        self.messages = {}
+        self.messages = []
 
     def createMessage(self, message: Message):
-        if message.id in self.messages.keys():
-            raise ValueError(f'{message.id} MessageHash already there')
-        self.messages[message.id] = message
+        if message in self.messages:
+            raise ValueError(f'{message} already created.')
+        if message.queue not in self.queues:
+            raise KeyError(f'unknown Queue `{message.queue}`.')
+        self.messages.append(message)
 
     def commit(self, transaction):
         with kombu.Connection(self.url) as conn:
             producer = conn.Producer(serializer='json')
-            for uid, message in self.messages.items():
+            for message in self.messages:
                 queue = self.queues[message.queue]
                 producer.publish(message.data,
                                  exchange=queue.exchange,

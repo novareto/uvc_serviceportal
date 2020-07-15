@@ -46,8 +46,10 @@ def test_mq_send(app, reader):
     import transaction
     from uvc_serviceportal.mq import Message
 
-    app.mqcenter.register_exchange('test', type='direct')
-    app.mqcenter.register_queue('test', 'info', 'message')
+    app.mqcenter.register_exchange(
+        name='test', type='direct')
+    app.mqcenter.register_queue(
+        exchange_name='test', name='info', routing_key='message')
     request = app.request_factory(app, environ={'REQUEST_METHOD': 'GET'})
 
     message = Message(

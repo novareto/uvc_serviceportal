@@ -14,11 +14,12 @@ class ExchangeType(enum.Enum):
 
 class Message:
 
-    __slots__ = ('type', 'data')
+    __slots__ = ('routing_key', 'data', 'queue')
 
-    def __init__(self, type: str, data: typing.Any):
+    def __init__(self, queue: str, routing_key: str, data: typing.Any):
         self.data = data
-        self.type = type
+        self.queue = queue
+        self.routing_key = routing_key
 
     @property
     def id(self):
@@ -43,10 +44,10 @@ class MQDataManager:
         with kombu.Connection(self.url) as conn:
             producer = conn.Producer(serializer='json')
             for uid, message in self.messages.items():
-                queue = self.queues[message.type]
+                queue = self.queues[message.queue]
                 producer.publish(message.data,
                                  exchange=queue.exchange,
-                                 routing_key='message',
+                                 routing_key=message.routing_key,
                                  declare=[queue])
 
     def abort(self, transaction):

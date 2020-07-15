@@ -11,8 +11,7 @@ def app(caplog):
     mqcenter = MQCenter({})
     return Application(
         mqcenter, caplog, Request, config={
-#            'mq_url': 'memory:///'
-            'mq_url': 'amqp://guest:guest@localhost//'
+            'mq_url': 'memory:///'
         }
     )
 

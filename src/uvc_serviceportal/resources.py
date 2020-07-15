@@ -10,7 +10,7 @@ library = Library('uvc_serviceportal', 'static')
 css = Resource(library, 'uvc_serviceportal.css')
 
 
-vendor = Resource(library, 'vuedist/js/chunk-vendors.js')
+#vendor = Resource(library, 'vuedist/js/chunk-vendors.js')
 #manifest = Resource(library, 'csc/dist/js/manifest.js')
 
 
@@ -26,7 +26,7 @@ class VueResource(Resource):
 
 app = VueResource(library, 'vuedist/js/app.js', bottom=True)
 
-csc = Group([vendor, app])
+csc = Group([app,])
 
 
 

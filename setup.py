@@ -14,11 +14,13 @@ install_requires = [
     'roughrider.routing',
     'transaction',
     'wrapt',
-    'repoze.filesafe'
+    'repoze.filesafe',
+    'kombu'
 ]
 
 test_requires = [
     'WebTest',
+    'pytest-cov'
 ]
 
 
@@ -52,6 +54,7 @@ setup(
         ],
         'uvc_serviceportal.leikas': [
             'leika1 = uvc_serviceportal.leikas.leika1:LEIKA',
+            'leika2 = uvc_serviceportal.leikas.leika1:LEIKA1',
         ]
     }
 )

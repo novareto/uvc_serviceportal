@@ -50,7 +50,8 @@ def test_mq_send(app, reader):
     app.mqcenter.register_queue('test', 'info', 'message')
     request = app.request_factory(app, environ={'REQUEST_METHOD': 'GET'})
 
-    message = Message(type='info', data={"test": "BLA"})
+    message = Message(
+        queue='info', routing_key="message", data={"test": "BLA"})
     with transaction.manager:
         with request.mq_transaction as dm:
             dm.createMessage(message)

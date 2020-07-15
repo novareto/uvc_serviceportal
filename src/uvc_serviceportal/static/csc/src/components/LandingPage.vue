@@ -13,24 +13,24 @@
           >
         </div>
       </div>
-      <pre> {{filter}} </pre>
     </div>
     <div class="row">
       <div class="col-md-9">
           <transition-group name="flip-list" tag="div">
         <div
-          class="mt-1"
+          class="mt-2 shadow"
           v-for="leika in filterLeikas"
           :key="leika.id"
         >
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">{{leika.id}}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{leika.title}}</h6>
-              <p class="card-text">{{leika.description}}</p>
-              <p class="card-text">{{leika.tags}}</p>
+              <h5 class="card-title">{{leika.title}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{leika.description}}</h6>
+              <!--<p class="card-text">{{leika.description}}</p>-->
+              <p class="card-text"><small class="text-muted">{{leika.tags.join(' - ')}}</small></p>
+              <p class="card-text"><small class="text-muted">{{leika.security_level}}</small></p>
               <a
-                :href="'leikas/' + leika.id"
+                :href="'whowhat/' + leika.id"
                 class="btn btn-primary card-link"
               >
                 <svg
@@ -50,7 +50,7 @@
                     d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"
                   />
                 </svg>
-                Anlegen
+                Weiter
               </a>
             </div>
           </div>
@@ -88,10 +88,7 @@
 
 function containsAny(source, target)
 {
-    console.log(source)
-    console.log(target)
   var result = source.filter(function(item){ return target.indexOf(item) > -1});
-    console.log(result)
     return (result.length > 0);
 }
 
@@ -116,12 +113,8 @@ export default {
         );
       }
       if (this.filter.cat.length > 0){
-           console.log(this.filter.cat.length)
-           console.log('I AM IN ')
-           
            leikas = leikas.filter(leika => containsAny(this.filter.cat, leika.tags));
       }
-      console.log(this.filter.text);
       return leikas;
     }
   },

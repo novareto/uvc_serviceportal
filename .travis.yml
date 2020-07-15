@@ -9,6 +9,7 @@ matrix:
       before_install:
             - sudo apt-get update -qq
             - sudo apt-get install libev-dev
+            - pip install
       install: pip install -U tox-travis
       script: tox
 

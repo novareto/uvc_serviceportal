@@ -46,6 +46,24 @@ def index(request):
     }
 
 
+@route(ROUTES, '/whowhat/{leika_id:string}')
+@template_endpoint('whowhat.pt')
+def whowhat(request):
+    if leika := REGISTRY.get(request.params["leika_id"]):
+        if leika.security_level == 'Q1':
+            location = 'http://localhost:8090/leikas/%s' % request.params["leika_id"]
+            return horseman.response.reply(307, headers = dict(location=location))
+        else:
+            return {
+                'request': request,
+                'leika': leika,
+                'leika_json': leika.json()
+            }
+    return horseman.response.reply(404)
+
+
+
+
 @route(ROUTES, '/fail')
 def failing(request):
     raise NotImplementedError('AAhhhh')

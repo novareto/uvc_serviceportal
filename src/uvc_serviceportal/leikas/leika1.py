@@ -20,10 +20,9 @@ PATH = Path(__file__)
 
 
 class Leika1(BaseFormularObject):
-
     def __init__(self, *args, **kwargs):
-        with PATH.with_suffix('.json').open() as fd:
-            kwargs['jsonschema'] = fd.read()
+        with PATH.with_suffix(".json").open() as fd:
+            kwargs["jsonschema"] = fd.read()
         super().__init__(*args, **kwargs)
 
     @property
@@ -33,9 +32,10 @@ class Leika1(BaseFormularObject):
 
 LEIKA = Leika1(
     id="leika1",
-    title=u"Leika Test",
-    description="Leika Test Description",
-    tags=['Unfall', 'Sicherheitsfachkraft'],
+    title="Unfallanzeige",
+    description="Elektronische Unfallanzeige",
+    security_level="Q1",
+    tags=["Unfall", "Sicherheitsfachkraft"],
     output="<xml><uv><name>{name}</name></uv>",
     icon="bi bi-chevron-right",
 )
@@ -43,41 +43,43 @@ LEIKA = Leika1(
 
 LEIKA1 = Leika1(
     id="leika2",
-    title=u"Leika2 Test",
-    description="Leika Test Description",
-    tags=['Unfall', 'Sicherheitsfachkraft'],
+    title="Berufskrankheiten",
+    description="Antrag auf Berufskrankheiten",
+    security_level="Q2",
+    tags=["Unfallanzeige", "Sicherheitsfachkraft"],
     output="<xml><uv><name>{name}</name></uv>",
     icon="bi bi-chevron-right",
 )
 
-@route(ROUTES, '/leikas/{leika_id:string}')
-class Index(horseman.meta.APIView):
 
-    @template_endpoint('form.pt')
+@route(ROUTES, "/leikas/{leika_id:string}")
+class Index(horseman.meta.APIView):
+    @template_endpoint("form.pt")
     def GET(self, request):
-        #csc.need()
-        if leika := REGISTRY.get(request.params['leika_id']):
-            return {'request': request, 'leika': leika}
+        # csc.need()
+        if leika := REGISTRY.get(request.params["leika_id"]):
+            return {"request": request, "leika": leika}
         return horseman.response.reply(404)
 
 
-@route(ROUTES, '/leikas/{leika_id:string}/add')
+@route(ROUTES, "/leikas/{leika_id:string}/add")
 class Add(horseman.meta.APIView):
-
-    @xml_endpoint('leika1.xml')
+    @xml_endpoint("leika1.xml")
     def GET(self, request):
-        if leika := REGISTRY.get(request.params['leika_id']):
-            return {'name': 'My name'}
+        if leika := REGISTRY.get(request.params["leika_id"]):
+            return {"name": "My name"}
         return horseman.response.reply(404)
 
     def POST(self, request):
         form, files = horseman.parsing.parse(
-            request.environ['wsgi.input'], request.content_type)
-        if leika := REGISTRY.get(request.params['leika_id']):
+            request.environ["wsgi.input"], request.content_type
+        )
+        if leika := REGISTRY.get(request.params["leika_id"]):
             with request.mq_transaction as mq:
-
-                mq.createMessage(Message(queue='info', routing_key='default', data='test'))
-            #from repoze.filesafe import create_file
-            #f = create_file('/tmp/leik1.xml')
-            #f.write(leika.output.format(**form.to_dict()))
-            #1/0
+                mq.createMessage(
+                    Message(queue="info", routing_key="default", data="test")
+                )
+            # from repoze.filesafe import create_file
+            # f = create_file('/tmp/leik1.xml')
+            # f.write(leika.output.format(**form.to_dict()))
+            # 1/0

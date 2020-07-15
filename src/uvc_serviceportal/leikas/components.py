@@ -3,9 +3,18 @@
 # # cklinger@novareto.de
 
 import json
+
+from enum import Enum
 from typing import List
-from pkg_resources import iter_entry_points
 from pydantic import BaseModel
+from pkg_resources import iter_entry_points
+
+
+class SecurityEnum(str, Enum):
+    q1 = 'Q1'
+    q2 = 'Q2'
+    q3 = 'Q3'
+    q4 = 'Q4'
 
 
 class BaseFormularObject(BaseModel):
@@ -14,6 +23,7 @@ class BaseFormularObject(BaseModel):
     title: str
     description: str
     tags: List[str] = []
+    security_level: SecurityEnum = SecurityEnum.q1
     jsonschema: str
     output: str
     icon: str

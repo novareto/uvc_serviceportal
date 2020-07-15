@@ -30,7 +30,14 @@ def test_registry():
     class Test(BaseFormularObject):
         pass
 
-    test = Test(id='test', title='test', description='test', jsonschema='{}', output='', icon='')
+    test = Test(
+        id='test',
+        title='test',
+        description='test',
+        jsonschema='{}',
+        output='',
+        icon=''
+    )
     REGISTRY.register('test', test)
 
 
@@ -39,13 +46,15 @@ def test_mq_send(app, reader):
     import transaction
     from uvc_serviceportal.mq import Message
 
-    app.mqcenter.exchanges['test'] = kombu.Exchange('test', type='direct')
-    app.mqcenter.register_queue('test', 'info', 'default')
+    app.mqcenter.register_exchange('test', type='direct')
+    app.mqcenter.register_queue('test', 'info', 'message')
     request = app.request_factory(app, environ={'REQUEST_METHOD': 'GET'})
 
-    message = Message(type='info', data="BLA")
+    message = Message(type='info', data={"test": "BLA"})
     with transaction.manager:
         with request.mq_transaction as dm:
             dm.createMessage(message)
 
     messages = reader(app)
+    assert len(messages) == 1
+    assert messages == [{'test': 'BLA'}]

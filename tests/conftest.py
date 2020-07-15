@@ -11,7 +11,8 @@ def app(caplog):
     mqcenter = MQCenter({})
     return Application(
         mqcenter, caplog, Request, config={
-            'mq_url': 'memory:///'
+#            'mq_url': 'memory:///'
+            'mq_url': 'amqp://guest:guest@localhost//'
         }
     )
 
@@ -34,19 +35,17 @@ def reader():
             self.messages = []
 
         def callback(self, body, message):
-            import pdb
-            pdb.set_trace()
-            self.messages.append(body, message)
+            self.messages.append(body)
             message.ack()
 
         def __call__(self, app):
             with AMQPConnection(app.config['mq_url']) as conn:
                 queue = app.mqcenter.queues['info']
                 with conn.Consumer(
-                        queue, callbacks=[self.callback]) as consumer:
+                        [queue], callbacks=[self.callback]) as consumer:
                     while True:
                         try:
-                            conn.drain_events(timeout=2)
+                            conn.drain_events(timeout=1)
                         except socket.timeout:
                             break
             return self.messages

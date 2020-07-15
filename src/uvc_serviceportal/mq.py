@@ -1,30 +1,28 @@
+import enum
 import transaction
 import kombu
+import typing
 from pkg_resources import iter_entry_points
+
+
+class ExchangeType(enum.Enum):
+    direct = "direct"
+    topic = "topic"
+    fanout = "fanout"
+    headers = "headers"
 
 
 class Message:
 
     __slots__ = ('type', 'data')
 
-    def __init__(self, type: str, **data):
+    def __init__(self, type: str, data: typing.Any):
         self.data = data
         self.type = type
 
     @property
     def id(self):
         return self.__hash__()
-
-    def dump(self):
-        return self.data
-
-    @staticmethod
-    def publish(payload, connection, queue, routing_key):
-        exchange = queue.exchange
-        with connection.Producer(serializer='json') as producer:
-            producer.publish(
-                payload, exchange=exchange, routing_key=routing_key,
-                declare=[queue])
 
 
 class MQDataManager:
@@ -43,11 +41,13 @@ class MQDataManager:
 
     def commit(self, transaction):
         with kombu.Connection(self.url) as conn:
-            while self.messages:
-                uid, message = self.messages.popitem()
-                payload = message.dump()
+            producer = conn.Producer(serializer='json')
+            for uid, message in self.messages.items():
                 queue = self.queues[message.type]
-                message.publish(payload, conn, queue, message.type)
+                producer.publish(message.data,
+                                 exchange=queue.exchange,
+                                 routing_key='message',
+                                 declare=[queue])
 
     def abort(self, transaction):
         self.messages = {}
@@ -88,18 +88,30 @@ class MQTransaction:
 
 class MQCenter:
 
+    exchanges: typing.Dict
+    queues: typing.Dict
+
     __slots__ = ('queues', 'exchanges')
 
-    def __init__(self, exchanges):
+    def __init__(self, exchanges=None):
+        if exchanges is None:
+            exchanges = {}
         self.exchanges = exchanges
         self.queues = {}
 
+    def register_exchange(self, name: str, type: ExchangeType):
+        type = ExchangeType(type)  # idempotent
+        if name in self.exchanges:
+            raise KeyError(f'Exchange `{name}` already exists.')
+        self.exchanges[name] = kombu.Exchange(
+            name, type=type.value, durable=True)
+        return self.exchanges[name]
+
     def register_queue(self, exchange_name, name, routing_key="default"):
-        if (exchange := self.exchanges.get(exchange_name)) is not None:
-            queue = kombu.Queue(name, exchange, routing_key)
-            self.queues[name] = queue
-            return queue
-        raise KeyError(f'Echange {exchange_name} does not exist')
+        if (exchange := self.exchanges.get(exchange_name)) is None:
+            raise KeyError(f'Echange {exchange_name} does not exist')
+        self.queues[name] = kombu.Queue(name, exchange, routing_key)
+        return self.queues[name]
 
     def get_transaction(self, url, transaction_manager=None):
         return MQTransaction(url, self.queues, transaction_manager)

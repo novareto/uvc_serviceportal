@@ -5,7 +5,6 @@ from onelogin.saml2.utils import OneLogin_Saml2_Utils
 import horseman.meta
 import horseman.response
 import horseman.http
-import horseman.parsing
 import roughrider.routing.node
 from roughrider.routing.route import add_route as route
 
@@ -59,7 +58,7 @@ def sso(request):
 
 @route(ROUTES, '/saml/sso2', methods=['GET'])
 def sso2(request):
-    return_to = '/attrs'
+    return_to = '/saml/attrs'
     auth = request.saml_auth()
     return redirect(auth.login(return_to))
 
@@ -107,10 +106,8 @@ def acs(request):
         elif auth.get_settings().is_debug_active():
             error_reason = auth.get_last_error_reason()
 
-    if 'samlUserdata' in request.session:
-        paint_logout = True
-        if len(request.session['samlUserdata']) > 0:
-            attributes = request.session['samlUserdata'].items()
+    if request.user is not None:
+        attributes = request.user.data
 
     return {
         'errors': errors,
@@ -142,26 +139,11 @@ def sls(request):
         paint_logout = True
         if len(request.session['samlUserdata']) > 0:
             attributes = request.session['samlUserdata'].items()
-
-
-@route(ROUTES, '/saml/', methods=['GET', 'POST'])
-@template_endpoint('saml.pt')
-def index(request):
-
-    attributes = False
-
-    if 'samlUserdata' in request.session:
-        paint_logout = True
-        if len(request.session['samlUserdata']) > 0:
-            attributes = request.session['samlUserdata'].items()
-    else:
-        paint_logout = False
-
     return {
         'errors': [],
         'error_reason': None,
         'not_auth_warn': False,
         'success_slo': False,
-        'attributes': attributes,
+        'attributes': request.user.attributes,
         'paint_logout': paint_logout
     }

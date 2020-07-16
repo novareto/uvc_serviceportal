@@ -57,11 +57,11 @@ def template_endpoint(template_name: str, layout=layout):
             return result
         assert isinstance(result, dict)
 
-        request = kwargs.get('request')
-        path = request is not None and request.environ['PATH_INFO'] or ''
+        request = args[0]
+        path = request.environ['PATH_INFO']
         content = template.render(macros=layout.macros, **result)
         if layout is not None:
-            body = layout.render(content, path=path)
+            body = layout.render(content, path=path, user=request.user)
             return horseman.response.reply(
                 body=body,
                 headers={'Content-Type': 'text/html; charset=utf-8'})

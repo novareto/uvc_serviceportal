@@ -78,15 +78,17 @@ class LoginView(horseman.meta.APIView):
 @template_endpoint('whowhat.pt')
 def whowhat(request):
     if leika := REGISTRY.get(request.params["leika_id"]):
-        if leika.security_level == 'Q1':
-            location = 'http://localhost:8090/leikas/%s' % request.params["leika_id"]
-            return horseman.response.reply(307, headers = dict(location=location))
-        else:
-            return {
-                'request': request,
-                'leika': leika,
-                'leika_json': leika.json()
-            }
+        if leika.security_level == 'Q1' and request.user is None:
+            return horseman.response.reply(
+                code=307, headers={
+                    'Location': '/saml/sso'
+                })
+
+        return {
+            'request': request,
+            'leika': leika,
+            'leika_json': leika.json()
+        }
     return horseman.response.reply(404)
 
 

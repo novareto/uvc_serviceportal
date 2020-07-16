@@ -17,6 +17,7 @@
       </div>
     </nav>
   </header>
+
   <main class="flex-shrink-0">
     <div id="app" class="container">
       <div tal:replace="structure content"> </div>
@@ -27,7 +28,11 @@
 <footer id="portal-footer" class="footer mt-auto py-3">
   <div class="page-footer">
     <div class="container">
-      <p>Place sticky footer content here.</p>
+      <article tal:condition="user is not None">
+        You are logged in as
+        <span tal:content="user.data.get('urn:oid:2.16.840.1.113730.3.1.241')"
+              />
+      </article>
     </div>
   </div>
 </footer>

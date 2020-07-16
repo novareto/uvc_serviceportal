@@ -41,7 +41,9 @@ def setup_app(config, logger):
     # SAML
     saml_folder = hydra.utils.to_absolute_path(config.SAML.folder)
     frontend = Application(
-        mqcenter, logger, Request, config.app, saml_folder)
+        mqcenter, logger,
+        Request.factory(config.app.session_key),
+        config.app, saml_folder)
 
     # Creating the main router
     application = rutter.urlmap.URLMap(

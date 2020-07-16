@@ -1,20 +1,29 @@
+from dataclasses import dataclass
 from horseman.meta import Overhead
+import horseman.parsing
 from urllib.parse import parse_qs, urlparse
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
+
+
+@dataclass
+class User:
+    data: dict
 
 
 class Request(Overhead):
 
     __slots__ = (
-        'app', 'environ', 'params', 'data', 'method', 'content_type',
-        '_query', '_saml_environ'
+        'app', 'environ', 'params', 'session', 'data', 'method',
+        'content_type', '_query', '_saml_environ', '_user'
     )
 
-    def __init__(self, app, environ, **params):
+    def __init__(self, app, environ, session, **params):
         self.app = app
         self.environ = environ
         self.params = params
-        self.data = {}
+        self.data = None
+        self.session = session
+        self._user = ...
         self._query = None
         self._saml_environ = None
         self.method = environ['REQUEST_METHOD']
@@ -22,6 +31,13 @@ class Request(Overhead):
             self.content_type = environ.get('CONTENT_TYPE')
         else:
             self.content_type = None
+
+    @classmethod
+    def factory(cls, session_key):
+        def request_factory(app, environ, **args):
+            session = environ[session_key]
+            return cls(app, environ, session, **args)
+        return request_factory
 
     def set_data(self, data):
         self.data = data
@@ -76,3 +92,20 @@ class Request(Overhead):
     def saml_auth(self):
         return OneLogin_Saml2_Auth(
             self.saml_environ, custom_base_path=self.app.saml_root)
+
+    @property
+    def user(self):
+        if self._user is not ...:
+            return self._user
+        if 'samlUserdata' in self.session:
+            self._user = User(data=self.session['samlUserdata'])
+        else:
+            self._user = None
+        return self._user
+
+    @classmethod
+    def factory(cls, session_key):
+        def request_factory(app, environ, **args):
+            session = environ[session_key]
+            return cls(app, environ, session, **args)
+        return request_factory

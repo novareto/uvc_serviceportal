@@ -1,0 +1,25 @@
+<div>
+  <h1>Login</h1>
+  <div class="row">
+    <div class="col-md-9">
+
+      <form method="POST" action="/auth/login">
+        <div class="form-group" tal:repeat="field form">
+          <label tal:content="field.label" />
+          <div tal:content="structure field(class_='form-control')" />
+          <small id="emailHelp" class="form-text text-muted" tal:content="field.description"></small>
+          <ul class="errors" tal:condition="field.errors">
+            <li tal:repeat="error form.username.errors">
+              <span tal:content="error"> </span>
+            </li>
+          </ul>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Send" />
+      </form>
+    </div>
+    <div class="col-md-3">
+      <h2> Service </h2>
+    </div>
+  </div>
+</div>
+

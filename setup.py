@@ -15,7 +15,8 @@ install_requires = [
     'transaction',
     'wrapt',
     'repoze.filesafe',
-    'kombu'
+    'kombu',
+    'wtforms'
 ]
 
 test_requires = [

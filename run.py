@@ -24,7 +24,7 @@ def setup_session(config):
     folder = current / "sessions"
     handler = cromlech.sessions.file.FileStore(folder, 300)
     manager = cromlech.session.SignedCookieManager("secret", handler, cookie="my_sid")
-    return cromlech.session.WSGISessionManager(manager, environ_key="sess")
+    return cromlech.session.WSGISessionManager(manager, environ_key=config.app.session_key)
 
 
 def setup_app(config, logger):

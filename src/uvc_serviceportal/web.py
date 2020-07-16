@@ -12,6 +12,13 @@ from .layout import template_endpoint
 from .leikas.components import REGISTRY
 
 
+import wtforms.form
+import wtforms.fields
+import wtforms.validators
+from horseman.parsing import parse
+
+
+
 class Application(horseman.meta.SentryNode,
                   roughrider.routing.node.RoutingNode):
 
@@ -44,6 +51,36 @@ def index(request):
         'leikas': REGISTRY,
         'leikas_json': REGISTRY.json()
     }
+
+
+
+
+class LoginForm(wtforms.form.Form):
+    username = wtforms.fields.StringField(
+        'Username', description="Benutzername", validators=(wtforms.validators.InputRequired(),))
+    password = wtforms.fields.PasswordField(
+        'Password', description="Passwort", validators=(wtforms.validators.InputRequired(),))
+
+
+@route(ROUTES, "/login")
+class LoginView(horseman.meta.APIView):
+
+    @template_endpoint('login.pt')
+    def GET(self, request):
+        form = LoginForm()
+        return {'form': form, 'error': None}
+
+    @template_endpoint('login.pt')
+    def POST(self, request, environ):
+        data, files = parse(environ['wsgi.input'], request.content_type)
+        form = LoginForm(data)
+        if not form.validate():
+            return {'form': form, 'error': 'form'}
+        else:
+            return horseman.response.Response.create(
+                302, headers={'Location': '/'})
+        return {'form': form, 'error': 'auth'}
+
 
 
 @route(ROUTES, '/whowhat/{leika_id:string}')

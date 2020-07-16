@@ -10,13 +10,14 @@ install_requires = [
     'cromlech.sessions.file',
     'fanstatic',
     'horseman',
+    'kombu',
     'pydantic',
+    'python3-saml',
+    'repoze.filesafe',
     'roughrider.routing',
     'transaction',
     'wrapt',
-    'repoze.filesafe',
-    'kombu',
-    'wtforms'
+    'wtforms',
 ]
 
 test_requires = [

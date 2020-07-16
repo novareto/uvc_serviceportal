@@ -2,6 +2,9 @@ server:
   host: 0.0.0.0
   port: 8090
 
+SAML:
+  folder: SAML
+
 defaults:
   - hydra/job_logging: colorlog
   - hydra/hydra_logging: colorlog

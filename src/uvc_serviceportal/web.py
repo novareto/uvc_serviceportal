@@ -5,18 +5,17 @@ import roughrider.routing.node
 
 from horseman.prototyping import Environ, StartResponse
 from roughrider.routing.route import add_route as route
-from uvc_serviceportal import ROUTES
 
+import uvc_serviceportal.saml
+from uvc_serviceportal import ROUTES
 from .mq import MQTransaction, Message
 from .layout import template_endpoint
 from .leikas.components import REGISTRY
-
 
 import wtforms.form
 import wtforms.fields
 import wtforms.validators
 from horseman.parsing import parse
-
 
 
 class Application(horseman.meta.SentryNode,
@@ -26,9 +25,10 @@ class Application(horseman.meta.SentryNode,
         'mqcenter', 'config', 'logger', 'request_factory'
     )
 
-    def __init__(self, mqcenter, logger, request_factory, config):
+    def __init__(self, mqcenter, logger, request_factory, config, saml_root):
         self.request_factory = request_factory
         self.config = config
+        self.saml_root = saml_root
         self.logger = logger
         self.routes = ROUTES
         self.mqcenter = mqcenter
@@ -51,15 +51,6 @@ def index(request):
         'leikas': REGISTRY,
         'leikas_json': REGISTRY.json()
     }
-
-
-
-
-class LoginForm(wtforms.form.Form):
-    username = wtforms.fields.StringField(
-        'Username', description="Benutzername", validators=(wtforms.validators.InputRequired(),))
-    password = wtforms.fields.PasswordField(
-        'Password', description="Passwort", validators=(wtforms.validators.InputRequired(),))
 
 
 @route(ROUTES, "/login")

@@ -1,4 +1,5 @@
 import hydra
+import hydra.utils
 import kombu
 import logging
 import bjoern
@@ -23,16 +24,24 @@ def setup_session(config):
     current = pathlib.Path(__file__).parent
     folder = current / "sessions"
     handler = cromlech.sessions.file.FileStore(folder, 300)
-    manager = cromlech.session.SignedCookieManager("secret", handler, cookie="my_sid")
-    return cromlech.session.WSGISessionManager(manager, environ_key=config.app.session_key)
+    manager = cromlech.session.SignedCookieManager(
+        "secret", handler, cookie="my_sid")
+    return cromlech.session.WSGISessionManager(
+        manager, environ_key=config.app.session_key)
 
 
 def setup_app(config, logger):
+
+    # MQ
     mqcenter = MQCenter({
         'test': kombu.Exchange('test', type='direct')
     })
     mqcenter.register_queue('test', 'info', 'default')
-    frontend = Application(mqcenter, logger, Request, config.app)
+
+    # SAML
+    saml_folder = hydra.utils.to_absolute_path(config.SAML.folder)
+    frontend = Application(
+        mqcenter, logger, Request, config.app, saml_folder)
 
     # Creating the main router
     application = rutter.urlmap.URLMap(

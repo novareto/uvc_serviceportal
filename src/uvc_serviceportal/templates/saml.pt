@@ -1,0 +1,25 @@
+<article>
+  <div tal:condition="errors">
+    <div class="alert alert-danger" role="alert">
+      <strong>Errors:</strong>
+      <ul class="list-unstyled">
+        <li tal:repeat="err errors"
+            tal:content="err" />
+      </ul>
+      <span tal:condition="error_reason">{{ error_reason }}</span>
+    </div>
+  </div>
+
+  <div tal:condition="not_auth_warn"
+       class="alert alert-danger" role="alert"
+       >Not authenticated</div>
+
+  <div tal:condition="success_slo"
+       class="alert alert-success" role="alert"
+       >Successfully logged out</div>
+
+  <div tal:condition="not paint_logout">
+    <a href="sso" class="btn btn-primary">Login</a>
+    <a href="sso2" class="btn btn-info">Login and access to attrs page</a>
+  </div>
+</article>

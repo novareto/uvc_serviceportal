@@ -8,6 +8,7 @@ from roughrider.routing.route import add_route as route
 
 import uvc_serviceportal.saml
 from uvc_serviceportal import ROUTES
+from .message import FlashMessages
 from .mq import MQTransaction, Message
 from .layout import template_endpoint
 from .leikas.components import REGISTRY
@@ -34,23 +35,35 @@ class Application(horseman.meta.SentryNode,
         self.mqcenter = mqcenter
 
     def handle_exception(self, exc_info, environ):
+        transaction.abort()
         exc_type, exc, traceback = exc_info
         self.logger.debug(exc)
 
     def __call__(self, environ: Environ, start_response: StartResponse):
-        with transaction.manager as txn:
-            environ['txn'] = txn
-            yield from super().__call__(environ, start_response)
+
+        transaction.begin()
+
+        def transaction_start_response(status, headers, exc_info=None):
+            if exc_info is not None:
+                transaction.abort()
+            else:
+                transaction.commit()
+            return start_response(status, headers, exc_info)
+
+        yield from super().__call__(environ, transaction_start_response)
 
 
 @route(ROUTES, '/')
 @template_endpoint('index.pt')
 def index(request):
-    return {
-        'request': request,
-        'leikas': REGISTRY,
-        'leikas_json': REGISTRY.json()
-    }
+    with FlashMessages(request.session, 'messages') as fm:
+        fm.createMessage('some message')
+        return {
+            'request': request,
+            'leikas': REGISTRY,
+            'messages': fm.hasMessages and fm.exhaustMessages() or None,
+            'leikas_json': REGISTRY.json()
+        }
 
 
 @route(ROUTES, "/login")
@@ -90,8 +103,6 @@ def whowhat(request):
             'leika_json': leika.json()
         }
     return horseman.response.reply(404)
-
-
 
 
 @route(ROUTES, '/fail')

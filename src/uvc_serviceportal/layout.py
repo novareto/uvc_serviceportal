@@ -26,6 +26,10 @@ class Layout:
         ns = {**self._namespace, **extra}
         return self._template.render(content=content, **ns)
 
+    def user(self):
+        import pdb; pdb.set_trace()
+
+
 
 def xml_endpoint(template_name: str):
     template = TEMPLATES[template_name]

@@ -18,12 +18,9 @@ import wtforms.validators
 from horseman.parsing import parse
 
 
-class Application(horseman.meta.SentryNode,
-                  roughrider.routing.node.RoutingNode):
+class Application(horseman.meta.SentryNode, roughrider.routing.node.RoutingNode):
 
-    __slots__ = (
-        'mqcenter', 'config', 'logger', 'request_factory'
-    )
+    __slots__ = ("mqcenter", "config", "logger", "request_factory")
 
     def __init__(self, mqcenter, logger, request_factory, config, saml_root):
         self.request_factory = request_factory
@@ -39,61 +36,38 @@ class Application(horseman.meta.SentryNode,
 
     def __call__(self, environ: Environ, start_response: StartResponse):
         with transaction.manager as txn:
-            environ['txn'] = txn
+            environ["txn"] = txn
             yield from super().__call__(environ, start_response)
 
 
-@route(ROUTES, '/')
-@template_endpoint('index.pt')
+@route(ROUTES, "/")
+@template_endpoint("index.pt")
 def index(request):
-    return {
-        'request': request,
-        'leikas': REGISTRY,
-        'leikas_json': REGISTRY.json()
-    }
+    return {"request": request, "leikas": REGISTRY, "leikas_json": REGISTRY.json()}
 
 
 @route(ROUTES, "/login")
-class LoginView(horseman.meta.APIView):
-
-    @template_endpoint('login.pt')
-    def GET(self, request):
-        form = LoginForm()
-        return {'form': form, 'error': None}
-
-    @template_endpoint('login.pt')
-    def POST(self, request, environ):
-        data, files = parse(environ['wsgi.input'], request.content_type)
-        form = LoginForm(data)
-        if not form.validate():
-            return {'form': form, 'error': 'form'}
-        else:
-            return horseman.response.Response.create(
-                302, headers={'Location': '/'})
-        return {'form': form, 'error': 'auth'}
+@template_endpoint("login.pt")
+def login(request):
+    return {
+        "request": request,
+    }
 
 
-
-@route(ROUTES, '/whowhat/{leika_id:string}')
-@template_endpoint('whowhat.pt')
+@route(ROUTES, "/whowhat/{leika_id:string}")
+@template_endpoint("whowhat.pt")
 def whowhat(request):
     if leika := REGISTRY.get(request.params["leika_id"]):
-        if leika.security_level == 'Q1' and request.user is None:
+        if leika.security_level == "Q1" and request.user is None:
+            return horseman.response.reply(code=307, headers={"Location": "/saml/sso"})
+        elif leika.security_level == "Q2":
             return horseman.response.reply(
-                code=307, headers={
-                    'Location': '/saml/sso'
-                })
-
-        return {
-            'request': request,
-            'leika': leika,
-            'leika_json': leika.json()
-        }
+                code=307,
+                headers={"Location": "/leikas/%s" % request.params["leika_id"]},
+            )
     return horseman.response.reply(404)
 
 
-
-
-@route(ROUTES, '/fail')
+@route(ROUTES, "/fail")
 def failing(request):
-    raise NotImplementedError('AAhhhh')
+    raise NotImplementedError("AAhhhh")

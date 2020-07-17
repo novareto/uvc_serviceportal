@@ -1,25 +1,27 @@
 <div>
   <h1>Login</h1>
-  <div class="row">
-    <div class="col-md-9">
+  <p class="lead"> Für Ihren Service müssen Sie sich anmelden/registrieren. Bitte wählen Sie einen der folgenden Provide um sich anzumelden </p>
 
-      <form method="POST" action="/auth/login">
-        <div class="form-group" tal:repeat="field form">
-          <label tal:content="field.label" />
-          <div tal:content="structure field(class_='form-control')" />
-          <small id="emailHelp" class="form-text text-muted" tal:content="field.description"></small>
-          <ul class="errors" tal:condition="field.errors">
-            <li tal:repeat="error form.username.errors">
-              <span tal:content="error"> </span>
-            </li>
-          </ul>
-        </div>
-        <input class="btn btn-primary" type="submit" value="Send" />
-      </form>
-    </div>
-    <div class="col-md-3">
-      <h2> Service </h2>
+
+<div class="row border p-3">
+  <div class="col-3">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">SAML Bund</a>
+      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">SAML Bayern</a>
+      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Facebook</a>
     </div>
   </div>
+  <div class="col-9">
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">SAML Bund</div>
+      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">Saml Bayern</div>
+      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">Facebook</div>
+    </div>
+  </div>
+</div>
+
+
+
+
 </div>
 

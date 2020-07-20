@@ -21,7 +21,7 @@
 
       "price": {
          "type": "number",
-         "title": "Preis",
+         "title": "Alter",
          "minimum": 0,
          "exclusiveMinimum": true
       }

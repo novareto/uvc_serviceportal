@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Wohnungshilfe f\u00fcr gesetzlich Unfallversicherte Gew\u00e4hrung",
+    "$id": "https://ozg.uv-kooperation.de/de/rul/wohnungshilfe-fuer-gesetzlich-unfallversicherte-gewaehrung",
+    "type": "object",
+    "properties": {
+        "titel-1": {
+            "title": "Titel",
+            "uniqueItems": "false",
+            "type": "string",
+                "enum": [
+                    "Dr.",
+                    "Prof."
+                ],
+        },
+        "vorname": {
+            "title": "Vorname",
+            "type": "string"
+        },
+        "name": {
+            "title": "Name",
+            "type": "string"
+        },
+        "gechlecht": {
+            "title": "Gechlecht",
+            "uniqueItems": "true",
+            "type": "string",
+                "enum": [
+                    "weiblich",
+                    "m\u00e4nnlich",
+                    "divers"
+                ],
+        },
+        "anschrift-strasse-hausnummer": {
+            "title": "Anschrift (Stra\u00dfe, Hausnummer)",
+            "type": "string"
+        },
+        "wohnort": {
+            "title": "Wohnort",
+            "type": "string"
+        }
+    },
+    "required": [
+        "anschrift-strasse-hausnummer",
+        "gechlecht",
+        "name",
+        "wohnort"
+    ]
+}

@@ -75,9 +75,14 @@ def login(request):
 @template_endpoint("whowhat.pt")
 def whowhat(request):
     if leika := REGISTRY.get(request.params["leika_id"]):
-        if leika.security_level == "Q1" and request.user is None:
+        if leika.security_level == "Q2" and request.user is None:
             return horseman.response.reply(code=307, headers={"Location": "/saml/sso"})
-        elif leika.security_level == "Q2":
+        if leika.security_level == "Q2" and request.user is not None:
+            return horseman.response.reply(
+                code=307,
+                headers={"Location": "/leikas/%s" % request.params["leika_id"]},
+            )
+        elif leika.security_level == "Q1":
             return horseman.response.reply(
                 code=307,
                 headers={"Location": "/leikas/%s" % request.params["leika_id"]},

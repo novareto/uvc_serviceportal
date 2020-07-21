@@ -1,17 +1,18 @@
 <template>
     <div>
       <form action="" @submit.prevent="submit">
-      <JsonSchema :schema="schema" v-model="model"  />
-      <input type="submit" class="btn btn-primary" @click.prevent="submit">
+        <JsonSchema v-model="model"
+                    :schema="schema"
+                    :wrapper="wrapper" />
+      <input type="submit" class="btn btn-primary" @click.prevent="submit" />
       </form>
-    <custom-wrapper> </custom-wrapper>
     </div>
 </template>
 
 <script>
 import JsonSchema from '@roma219/vue-jsonschema-form'
 import axios from 'axios'
-import CustomWrapper from './CustomWrapper'
+
 
 export default {
     props: {
@@ -22,18 +23,13 @@ export default {
     data() {
         return {
             model: {},
+            wrapper: {
+                componentName: 'CustomWrapper',
+                props: (propName, schema) => ({
+                    title: schema.title || propName
+                })
+            }
         }
-    },
-    computed: {
-      customWrapper() {
-          console.log('I AM IN ')
-      return {
-        componentName: 'CustomWrapper',
-        props: (propName, schema) => ({
-          title: schema.title || propName
-        })
-      }
-    },
     },
     methods: {
         submit() {
@@ -50,7 +46,7 @@ export default {
                     });
         }
     },
-    components: { JsonSchema, 'custom-wrapper': CustomWrapper }
+    components: { JsonSchema }
 }
 </script>
 

@@ -31,7 +31,7 @@
           </li>
           <li tal:condition="user is not None" class="list-inline-item"> <span tal:replace="user.data.get('urn:oid:2.16.840.1.113730.3.1.241')"/> </li>
           <li tal:condition="user is not None" class="list-inline-item"> Logout </li>
-          <li tal:condition="user is None" class="list-inline-item"> <a href="/whowhat"> Login </a> </li>
+          <li tal:condition="user is None" class="list-inline-item"> <a href="/saml/sso"> Login </a> </li>
         </ul>
       </div>
 

@@ -7,17 +7,21 @@
    "properties": {
 
       "id": {
+          "title": "Titel",
          "description": "The unique identifier for a product",
-         "type": "integer"
+         "type": "integer",
+         "minLength": 1,
       },
 
       "name": {
+          "title":" Name",
          "description": "Name of the product",
          "type": "string"
       },
 
       "price": {
          "type": "number",
+         "title": "Alter",
          "minimum": 0,
          "exclusiveMinimum": true
       }

@@ -58,6 +58,7 @@ setup(
         'uvc_serviceportal.leikas': [
             'leika1 = uvc_serviceportal.leikas.leika1:LEIKA',
             'leika2 = uvc_serviceportal.leikas.leika1:LEIKA1',
+            'leika3 = uvc_serviceportal.leikas.leika2:LEIKA',
         ]
     }
 )

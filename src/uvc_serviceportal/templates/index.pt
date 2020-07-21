@@ -1,5 +1,5 @@
 <div>
-  <h1>UVC-Service Portal</h1>
+  <h1>UV-Service Portal</h1>
   <!--
   <div>
     <div tal:repeat="leika leikas.values()">

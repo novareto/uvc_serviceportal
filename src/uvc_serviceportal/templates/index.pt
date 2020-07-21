@@ -1,15 +1,5 @@
 <div>
   <h1>UVC-Service Portal</h1>
-
-  <div>
-    <dl tal:condition="messages">
-      <tal:messages repeat="message messages">
-        <dt tal:content="message['type']" />
-        <dd tal:content="message['body']" />
-      </tal:messages>
-    </dl>
-  </div>
-
   <!--
   <div>
     <div tal:repeat="leika leikas.values()">

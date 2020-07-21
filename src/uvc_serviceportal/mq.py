@@ -85,12 +85,14 @@ class MQTransaction:
 
 class MQCenter:
 
+    url: str
     exchanges: typing.Dict
     queues: typing.Dict
 
-    __slots__ = ('queues', 'exchanges')
+    __slots__ = ('url', 'queues', 'exchanges')
 
-    def __init__(self, exchanges=None):
+    def __init__(self, url, exchanges=None):
+        self.url = url
         if exchanges is None:
             exchanges = {}
         self.exchanges = exchanges
@@ -110,5 +112,7 @@ class MQCenter:
         self.queues[name] = kombu.Queue(name, exchange, routing_key)
         return self.queues[name]
 
-    def get_transaction(self, url, transaction_manager=None):
+    def get_transaction(self, transaction_manager=None):
+        if transaction_manager is None:
+            transaction_manager = transaction.get()
         return MQTransaction(url, self.queues, transaction_manager)

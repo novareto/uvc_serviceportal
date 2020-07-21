@@ -35,7 +35,14 @@
         </ul>
       </div>
 
-
+      <div>
+        <dl tal:condition="messages">
+          <tal:messages repeat="message messages">
+            <dt tal:content="message['type']" />
+            <dd tal:content="message['body']" />
+          </tal:messages>
+        </dl>
+      </div>
 
       <div tal:replace="structure content"> </div>
     </div>

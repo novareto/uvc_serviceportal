@@ -5,6 +5,16 @@ server:
 SAML:
   folder: SAML
 
+templates:
+  eager: True
+  cache: templates_cache
+  debug: True
+
+sessions:
+  folder: sessions
+  environ_key: hansegonpeter
+  timeout: 3600
+
 defaults:
   - hydra/job_logging: colorlog
   - hydra/hydra_logging: colorlog
@@ -12,4 +22,3 @@ defaults:
 app:
   auth_backend: http://api.novareto.de
   mq_url: amqp://guest:guest@localhost:5672//
-  session_key: hansegonpeter

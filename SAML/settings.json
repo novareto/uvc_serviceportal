@@ -2,13 +2,13 @@
     "strict": true,
     "debug": true,
     "sp": {
-        "entityId": "http://kraft.novareto.de:8090/saml/metadata",
+        "entityId": "http://kraft.novareto.de:8091/saml/metadata",
         "assertionConsumerService": {
-            "url": "http://kraft.novareto.de:8090/saml/acs",
+            "url": "http://kraft.novareto.de:8091/saml/acs",
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
         },
         "singleLogoutService": {
-            "url": "http://kraft.novareto.de:8090/saml/sls",
+            "url": "http://kraft.novareto.de:8091/saml/sls",
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
         },
         "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",

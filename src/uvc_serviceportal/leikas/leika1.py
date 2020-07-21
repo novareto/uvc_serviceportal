@@ -6,13 +6,12 @@ from pathlib import Path
 import horseman.parsing
 import horseman.response
 import horseman.meta
+from uvc_serviceportal.app import app
 from uvc_serviceportal.layout import template_endpoint, xml_endpoint
-from uvc_serviceportal import ROUTES
 from uvc_serviceportal.leikas.components import REGISTRY
 from uvc_serviceportal.leikas.components import BaseFormularObject
 from uvc_serviceportal.resources import csc
 from autoroutes import Routes
-from roughrider.routing.route import add_route as route
 from uvc_serviceportal.mq import Message
 
 
@@ -52,7 +51,7 @@ LEIKA1 = Leika1(
 )
 
 
-@route(ROUTES, "/leikas/{leika_id:string}")
+@app.route("/leikas/{leika_id:string}")
 class Index(horseman.meta.APIView):
     @template_endpoint("form.pt")
     def GET(self, request):
@@ -62,7 +61,7 @@ class Index(horseman.meta.APIView):
         return horseman.response.reply(404)
 
 
-@route(ROUTES, "/leikas/{leika_id:string}/add")
+@app.route("/leikas/{leika_id:string}/add")
 class Add(horseman.meta.APIView):
     @xml_endpoint("leika1.xml")
     def GET(self, request):

@@ -8,8 +8,8 @@ import horseman.http
 import roughrider.routing.node
 from roughrider.routing.route import add_route as route
 
+from uvc_serviceportal.app import app
 from uvc_serviceportal.layout import template_endpoint
-from uvc_serviceportal import ROUTES
 from uvc_serviceportal.request import Request
 
 
@@ -17,7 +17,7 @@ def redirect(url):
     return horseman.response.reply(code=302, headers={'Location': url})
 
 
-@route(ROUTES, '/saml/attrs')
+@app.route('/saml/attrs')
 @template_endpoint('attrs.pt')
 def attrs(request: Request):
     paint_logout = False
@@ -31,7 +31,7 @@ def attrs(request: Request):
     return {'paint_logout': paint_logout, 'attributes': attributes}
 
 
-@route(ROUTES, '/saml/metadata')
+@app.route('/saml/metadata')
 def metadata(request: Request):
     auth = request.saml_auth()
     settings = auth.get_settings()
@@ -46,7 +46,7 @@ def metadata(request: Request):
     return horseman.response.reply(code=500, body=', '.join(errors))
 
 
-@route(ROUTES, '/saml/sso', methods=['GET'])
+@app.route('/saml/sso', methods=['GET'])
 def sso(request):
     auth = request.saml_auth()
     # If AuthNRequest ID need to be stored in order to later validate it, do instead
@@ -56,14 +56,14 @@ def sso(request):
     return redirect(auth.login())
 
 
-@route(ROUTES, '/saml/sso2', methods=['GET'])
+@app.route('/saml/sso2', methods=['GET'])
 def sso2(request):
     return_to = '/saml/attrs'
     auth = request.saml_auth()
     return redirect(auth.login(return_to))
 
 
-@route(ROUTES, '/saml/slo', methods=['GET'])
+@app.route('/saml/slo', methods=['GET'])
 def slo(request):
     auth = request.saml_auth()
     name_id = request.session.get('samlNameId')
@@ -79,7 +79,7 @@ def slo(request):
         spnq=name_id_spnq)
     )
 
-@route(ROUTES, '/saml/acs', methods=['GET', 'POST'])
+@app.route('/saml/acs', methods=['GET', 'POST'])
 @template_endpoint('saml.pt')
 def acs(request):
     error_reason = None
@@ -119,7 +119,7 @@ def acs(request):
     }
 
 
-@route(ROUTES, '/saml/sls', methods=['GET', 'POST'])
+@app.route('/saml/sls', methods=['GET', 'POST'])
 @template_endpoint('saml.pt')
 def sls(request):
     auth = request.saml_auth()

@@ -62,10 +62,16 @@ def template_endpoint(template_name: str, layout=layout):
         assert isinstance(result, dict)
 
         request = args[0]
+        if (fm := request.get('flash')) is not None:
+            messages = fm.hasMessages and fm.exhaustMessages() or None
+        else:
+            messages = None
+
         path = request.environ['PATH_INFO']
         content = template.render(macros=layout.macros, **result)
         if layout is not None:
-            body = layout.render(content, path=path, user=request.user)
+            body = layout.render(
+                content, path=path, user=request.user, messages=messages)
             return horseman.response.reply(
                 body=body,
                 headers={'Content-Type': 'text/html; charset=utf-8'})

@@ -11,6 +11,7 @@ install_requires = [
     'fanstatic',
     'horseman',
     'kombu',
+    'lazy',
     'pydantic',
     'python3-saml',
     'repoze.filesafe',

@@ -1,7 +1,7 @@
 <template>
     <div>
       <form action="" @submit.prevent="submit">
-      <JsonSchema :schema="schema" v-model="model" :wrapper="customWrapper" />
+      <JsonSchema :schema="schema" v-model="model"  />
       <input type="submit" class="btn btn-primary" @click.prevent="submit">
       </form>
     <custom-wrapper> </custom-wrapper>

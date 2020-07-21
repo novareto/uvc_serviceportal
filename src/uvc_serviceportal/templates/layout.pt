@@ -42,7 +42,7 @@
   </main>
 
 
-<footer id="portal-footer" class="footer mt-auto py-3">
+  <footer id="portal-footer" class="footer mt-auto"> 
   <div class="page-footer">
     <div class="container">
       <article tal:condition="user is not None">

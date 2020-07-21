@@ -3,6 +3,7 @@
       <form action="" @submit.prevent="submit">
         <JsonSchema v-model="model"
                     :schema="schema"
+                    @validated="errors = event"
                     :wrapper="wrapper" />
       <input type="submit" class="btn btn-primary" @click.prevent="submit" />
       </form>
@@ -26,7 +27,8 @@ export default {
             wrapper: {
                 componentName: 'CustomWrapper',
                 props: (propName, schema) => ({
-                    title: schema.title || propName
+                    title: schema.title || propName,
+                    description: schema.description
                 })
             }
         }

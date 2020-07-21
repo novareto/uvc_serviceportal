@@ -4,9 +4,7 @@ exports[`mount a view component 1`] = `
 <div>
   <form action="">
     <div class="json-schema-form pure-form pure-form-stacked">
-      <div class="pure-control-group"><label>firstName</label> <input type="text">
-        <!---->
-      </div>
+      <customwrapper title="firstName"><input type="text"></customwrapper>
     </div> <input type="submit" class="btn btn-primary">
   </form>
 </div>

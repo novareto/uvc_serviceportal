@@ -10,12 +10,6 @@ def test_content(app):
     assert(1 is 1)
 
 
-def test_index(wsgiapp):
-    resp = wsgiapp.get('/')
-    assert(resp.status == '200 OK')
-    assert(resp.mustcontain("UVC-Service Portal") is None)
-
-
 def test_registry():
     from uvc_serviceportal.leikas import BaseFormularObject
     from uvc_serviceportal.leikas import REGISTRY
@@ -46,16 +40,15 @@ def test_mq_send(app, reader):
     import transaction
     from uvc_serviceportal.mq import Message
 
-    app.mqcenter.register_exchange(
-        name='test', type='direct')
-    app.mqcenter.register_queue(
+    app['mq'].register_exchange(name='test', type='direct')
+    app['mq'].register_queue(
         exchange_name='test', name='info', routing_key='message')
     request = app.request_factory(app, environ={'REQUEST_METHOD': 'GET'})
 
     message = Message(
         queue='info', routing_key="message", data={"test": "BLA"})
-    with transaction.manager:
-        with request.mq_transaction as dm:
+    with transaction.manager as tm:
+        with app['mq'].get_transaction(tm) as dm:
             dm.createMessage(message)
 
     messages = reader(app)

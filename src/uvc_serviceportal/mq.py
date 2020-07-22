@@ -115,4 +115,4 @@ class MQCenter:
     def get_transaction(self, transaction_manager=None):
         if transaction_manager is None:
             transaction_manager = transaction.get()
-        return MQTransaction(url, self.queues, transaction_manager)
+        return MQTransaction(self.url, self.queues, transaction_manager)

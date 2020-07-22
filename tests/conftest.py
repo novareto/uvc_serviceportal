@@ -3,17 +3,13 @@ import pytest
 
 @pytest.fixture
 def app(caplog):
-    from uvc_serviceportal.web import Application
-    from uvc_serviceportal.request import Request
-    from uvc_serviceportal import ROUTES
+    from uvc_serviceportal.app import Application
     from uvc_serviceportal.mq import MQCenter
 
-    mqcenter = MQCenter({})
-    return Application(
-        mqcenter, caplog, Request, config={
-            'mq_url': 'memory:///'
-        }
-    )
+    app = Application()
+    mqcenter = MQCenter('memory:///')
+    app['mq'] = mqcenter
+    return app
 
 
 @pytest.fixture
@@ -38,8 +34,8 @@ def reader():
             message.ack()
 
         def __call__(self, app):
-            with AMQPConnection(app.config['mq_url']) as conn:
-                queue = app.mqcenter.queues['info']
+            with AMQPConnection(app['mq'].url) as conn:
+                queue = app['mq'].queues['info']
                 with conn.Consumer(
                         [queue], callbacks=[self.callback]) as consumer:
                     while True:

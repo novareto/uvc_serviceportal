@@ -14,7 +14,6 @@ from .leikas.components import REGISTRY
 @app.route("/")
 @template_endpoint("index.pt")
 def index(request):
-    request['flash'].createMessage(body='Some message')
     return {
         'request': request,
         'leikas': REGISTRY,

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@roma219/vue-jsonschema-form": "^0.1.14",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-form-json-schema": "^2.6.0",
